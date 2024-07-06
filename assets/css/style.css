@@ -43,11 +43,11 @@
    * theme colors
    */
 
-  --hue: 227;
+  --hue: 100;
   --theme-bg: linear-gradient(to bottom, 
-                hsl(var(--hue, 227), 40%, 50%), 
-                hsl(var(--hue, 227), 40%, 60%));
-  --theme-color: hsl(var(--hue, 227), 42%, 57%);
+                hsl(var(--hue, 300), 40%, 50%), 
+                hsl(var(--hue, 300), 40%, 60%));
+  --theme-color: hsl(var(--hue, 100), 50%, 50%);
 
   /**
    * typography
@@ -266,8 +266,8 @@ body.loaded {
 
 .theme-btn {
   background-image: linear-gradient(to bottom, 
-                      hsl(var(--hue, 227), 40%, 50%), 
-                      hsl(var(--hue, 227), 40%, 60%));
+                      hsl(var(--hue, 300), 40%, 50%), 
+                      hsl(var(--hue, 300), 40%, 60%));
   width: 100%;
   aspect-ratio: 1 / 1;
   outline: 2px solid transparent;
