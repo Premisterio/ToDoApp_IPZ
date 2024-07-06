@@ -33,25 +33,23 @@ const taskCompleteSound = new Audio("./assets/sounds/task-complete.mp3");
 const getWeekDayName = function (dayNumber) {
   switch (dayNumber) {
     case 0:
-      return "Sunday";
+      return "Неділя";
     case 1:
-      return "Monday";
+      return "Понеділок";
     case 2:
-      return "Tuesday";
+      return "Вівторок";
     case 3:
-      return "Wednesday";
+      return "Середа";
     case 4:
-      return "Thursday";
+      return "Четвер";
     case 5:
-      return "Friday";
+      return "П'ятниця";
     case 6:
-      return "Saturday";
+      return "Субота";
     default:
-      return "Not a valid day";
+      return "Не валідний день";
   }
 }
-
-
 
 /**
  * convert month number to month name
@@ -62,35 +60,33 @@ const getWeekDayName = function (dayNumber) {
 const getMonthName = function (monthNumber) {
   switch (monthNumber) {
     case 0:
-      return "Jan";
+      return "Січ.";
     case 1:
-      return "Feb";
+      return "Лют.";
     case 2:
-      return "Mar";
+      return "Бер.";
     case 3:
-      return "Apr";
+      return "Квіт.";
     case 4:
-      return "May";
+      return "Трав.";
     case 5:
-      return "Jun";
+      return "Черв.";
     case 6:
-      return "Jul";
+      return "Лип.";
     case 7:
-      return "Aug";
+      return "Серп.";
     case 8:
-      return "Sep";
+      return "Вер.";
     case 9:
-      return "Oct";
+      return "Жовт.";
     case 10:
-      return "Nov";
+      return "Лист.";
     case 11:
-      return "Dec";
+      return "Груд.";
     default:
-      return "Not a valid month";
+      return "Не валідний місяць";
   }
 }
-
-
 
 // store weekday name, month name & month-of-day number
 const weekDayName = getWeekDayName(date.getDay());
@@ -100,8 +96,6 @@ const monthOfDay = date.getDate();
 // update headerTime date
 headerTime.textContent = `${weekDayName}, ${monthName} ${monthOfDay}`;
 
-
-
 /**
  * toggle active class on element
  * totalParameter: 1;
@@ -109,8 +103,6 @@ headerTime.textContent = `${weekDayName}, ${monthName} ${monthOfDay}`;
  */
 
 const elemToggler = function (elem) { elem.classList.toggle("active"); }
-
-
 
 /**
  * toggle active class on multiple elements
@@ -123,8 +115,6 @@ const addEventOnMultiElem = function (elems, event) {
     elems[i].addEventListener("click", event);
   }
 }
-
-
 
 /**
  * create taskItem elementNode and return it
@@ -146,7 +136,7 @@ const taskItemNode = function (taskText) {
 
     <p class="item-text">${taskText}</p>
 
-    <button class="item-action-btn" aria-label="Remove task" data-task-remove>
+    <button class="item-action-btn" aria-label="Видалити завдання" data-task-remove>
       <ion-icon name="trash-outline" aria-hidden="true"></ion-icon>
     </button>
 
@@ -155,8 +145,6 @@ const taskItemNode = function (taskText) {
   return createTaskItem;
 
 }
-
-
 
 /**
  * task input validation
@@ -189,11 +177,9 @@ const taskInputValidation = function (taskIsValid) {
 
   } else {
     // if user pass any falsy value like(0, "", undefined, null, NaN)
-    console.log("Please write something!");
+    console.log("Поле має бути заповнене!");
   }
 }
-
-
 
 /**
  * if there is an existing task,
@@ -207,8 +193,6 @@ const removeWelcomeNote = function () {
     welcomeNote.classList.remove("hide");
   }
 }
-
-
 
 /**
  * removeTask when click on delete button or check button
@@ -235,12 +219,10 @@ const removeTask = function () {
 
   } else {
     parentElement.remove(); // remove taskItem
-    removeWelcomeNote(); // remove welcom note
+    removeWelcomeNote(); // remove welcome note
   }
 
 }
-
-
 
 /**
  * addTask function
@@ -248,15 +230,13 @@ const removeTask = function () {
 
 const addTask = function () {
 
-  // check the task inpu validation
+  // check the task input validation
   taskInputValidation(taskInput.value);
 
-  // addEventListere to all taskItem checkbox and delete button
+  // addEvent to all taskItem checkbox and delete button
   addEventOnMultiElem(taskRemover, removeTask);
 
 }
-
-
 
 /**
  * add keypress listener on taskInput
@@ -273,8 +253,6 @@ taskInput.addEventListener("keypress", function (e) {
 
 });
 
-
-
 // toggle active class on menu when click on menuBtn or dropdownLink 
 const toggleMenu = function () { elemToggler(menu); }
 addEventOnMultiElem(menuTogglers, toggleMenu);
@@ -283,8 +261,6 @@ addEventOnMultiElem(menuTogglers, toggleMenu);
 const toggleModal = function () { elemToggler(modal); }
 addEventOnMultiElem(modalTogglers, toggleModal);
 
-
-
 /**
  * add "loaded" class on body when website is fully loaded
  */
@@ -292,8 +268,6 @@ addEventOnMultiElem(modalTogglers, toggleModal);
 window.addEventListener("load", function () {
   document.body.classList.add("loaded");
 });
-
-
 
 /**
  * change body background when click on any themeBtn

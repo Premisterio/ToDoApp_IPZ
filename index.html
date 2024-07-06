@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taskbuddy</title>
+  <title>ToDoApp</title>
 
   <!-- 
     - favicon
@@ -43,9 +43,9 @@
         <header class="header">
 
           <div>
-            <h1 class="h1 header-title">My Day</h1>
-
-            <p class="header-time" data-header-time>Saturday, July 2</p>
+            <h1 class="h1 header-title">Сьогодні</h1> 
+              <!-- ДОДАТИ ФУНКЦІЮ ПЕРЕЙМЕНУВАННЯ -->
+            <p class="header-time" data-header-time>Субота, Лип. 2</p>
           </div>
 
           <div class="dropdown-wrapper">
@@ -60,7 +60,7 @@
               <ul class="dropdown-list">
 
                 <li class="dropdown-item">
-                  <p class="item-title">Theme</p>
+                  <p class="item-title">Змінити тему:</p>
 
                   <div class="theme-btn-group">
 
@@ -85,7 +85,7 @@
                   <button class="dropdown-link" data-modal-toggler data-menu-toggler>
                     <ion-icon name="information-circle-outline"></ion-icon>
 
-                    <span class="span">Bob info</span>
+                    <span class="span">Інформація</span>
                   </button>
                 </li>
 
@@ -95,10 +95,6 @@
 
         </header>
 
-
-
-
-
         <!-- 
           - #MAIN
         -->
@@ -107,19 +103,19 @@
           <img src="./assets/images/calender-image.svg" width="130" height="115" alt="calender image" class="img">
 
           <h2 class="h2">
-            Wondering where <br>
-            your tasks are?
+            Додайте завдання <br>
+               на сьогодні
           </h2>
         </div>
 
         <ul class="task-list" data-task-list></ul>
 
-        <div class="input-wrapper" title="Add a task in 'My Day'">
+        <div class="input-wrapper" title="Додати нове завдання">
 
           <input type="text" name="task" aria-label="Add task" maxlength="100"
-            placeholder="Try typing 'Jogging 20min at morning'" class="input-field" data-task-input>
+            placeholder="Напишіть будь-що, наприклад: 'Помити посуд'" class="input-field" data-task-input>
 
-          <span class="input-text">Add a task</span>
+          <span class="input-text">Додати завдання</span>
 
           <div class="input-icon">
             <ion-icon name="add-outline" class="add-icon" aria-hidden="true"></ion-icon>
@@ -131,10 +127,6 @@
 
       </article>
 
-
-
-
-
       <!-- 
         - #APP INFO MODAL
       -->
@@ -142,37 +134,38 @@
       <div class="app-info" data-info-modal>
         <div class="modal">
 
-          <h2 class="modal-title">App info</h2>
+          <h2 class="modal-title">Інформація</h2>
 
           <ul class="modal-list">
 
             <li class="modal-item">
-              <strong class="strong">Version:</strong>
+              <strong class="strong">Версія:</strong>
 
-              <span class="span">1.0.0</span>
+              <span class="span">1.0.1</span>
             </li>
 
             <li class="modal-item">
-              <strong class="strong">Publish:</strong>
+              <strong class="strong">Створено:</strong>
 
-              <span class="span">06 July 2022</span>
+              <span class="span">01 Червня 2024</span>
             </li>
 
             <li class="modal-item">
-              <strong class="strong">Last Update:</strong>
+              <strong class="strong">Остання зміна:</strong>
 
-              <span class="span">06 July 2022</span>
+              <span class="span">06 Липня 2024</span>
             </li>
 
             <li class="modal-item">
-              <strong class="strong">Created by:</strong>
-
-              <a href="" target="_black" class="span">володя Богдан</a>
+              <strong class="strong">Створили:</strong>
+              <a target="_black" class="span">Студенти ІПЗ-21009Б</a>
+              <a href="" target="_black" class="span">Володимир Грегуль</a>
+              <a href="" target="_black" class="span">Богдан Андреєв</a>
             </li>
 
           </ul>
 
-          <button class="modal-btn" data-modal-toggler>Ok</button>
+          <button class="modal-btn" data-modal-toggler>Окей</button>
 
         </div>
       </div>
