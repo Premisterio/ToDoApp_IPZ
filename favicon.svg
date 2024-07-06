@@ -1,4 +1,16 @@
-<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="100" height="100" rx="16" fill="white"/>
-<path d="M75 30L40 70L25 55" stroke="#00EF6E" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+<svg width="38" height="36" viewBox="0 0 38 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="22.4941" y="24.8042" width="10.6545" height="20.3223" rx="3" transform="rotate(129.055 22.4941 24.8042)" fill="url(#paint0_linear_45_7)"/>
+<rect x="29.5627" y="0.604492" width="9.74492" height="33.9023" rx="3" transform="rotate(38.788 29.5627 0.604492)" fill="url(#paint1_linear_45_7)"/>
+<defs>
+<linearGradient id="paint0_linear_45_7" x1="23.7561" y1="27.636" x2="21.4856" y2="49.4384" gradientUnits="userSpaceOnUse">
+<stop stop-color="#3E0000"/>
+<stop offset="1" stop-color="#A40000"/>
+</linearGradient>
+<linearGradient id="paint1_linear_45_7" x1="35.5114" y1="-1.79349" x2="34.4667" y2="34.5077" gradientUnits="userSpaceOnUse">
+<stop stop-color="#BB0000"/>
+<stop stop-color="#720000"/>
+<stop offset="0.33593" stop-color="#A40000"/>
+<stop offset="0.780644" stop-color="#550000"/>
+</linearGradient>
+</defs>
 </svg>
