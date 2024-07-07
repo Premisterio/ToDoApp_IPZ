@@ -1,9 +1,6 @@
 'use strict';
 
-
-
 // select all DOM elements
-
 const headerTime = document.querySelector("[data-header-time]");
 const menuTogglers = document.querySelectorAll("[data-menu-toggler]");
 const menu = document.querySelector("[data-menu]");
@@ -23,13 +20,11 @@ const date = new Date();
 const taskCompleteSound = new Audio("./assets/sounds/task-complete.mp3");
 const trashSound = new Audio("./assets/sounds/trash.mp3");
 
-
 /**
  * convert weekday number to weekday name
  * totalParameter: 1;
  * parameterValue: <number> 0-6;
  */
-
 const getWeekDayName = function (dayNumber) {
   switch (dayNumber) {
     case 0:
@@ -56,7 +51,6 @@ const getWeekDayName = function (dayNumber) {
  * totalParameter: 1;
  * parameterValue: <number> 0-11;
  */
-
 const getMonthName = function (monthNumber) {
   switch (monthNumber) {
     case 0:
@@ -101,7 +95,6 @@ headerTime.textContent = `${weekDayName}, ${monthName} ${monthOfDay}`;
  * totalParameter: 1;
  * parameterValue: <object> elementNode;
  */
-
 const elemToggler = function (elem) { elem.classList.toggle("active"); }
 
 /**
@@ -109,7 +102,6 @@ const elemToggler = function (elem) { elem.classList.toggle("active"); }
  * totalParameter: 2;
  * parameterValue: <object> elementNode, <function> any;
  */
-
 const addEventOnMultiElem = function (elems, event) {
   for (let i = 0; i < elems.length; i++) {
     elems[i].addEventListener("click", event);
@@ -121,27 +113,20 @@ const addEventOnMultiElem = function (elems, event) {
  * totalParameter: 1;
  * parameterValue: <string> any;
  */
-
 const taskItemNode = function (taskText) {
-
   const createTaskItem = document.createElement("li");
   createTaskItem.classList.add("task-item");
   createTaskItem.setAttribute("data-task-item", "");
   createTaskItem.innerHTML = `
-  
     <button class="item-icon" data-task-remove="complete">
       <span class="check-icon"></span>
     </button>
-
     <p class="item-text">${taskText}</p>
-
     <button class="item-action-btn" aria-label="Видалити завдання" data-task-remove>
       <ion-icon name="trash-outline" aria-hidden="true"></ion-icon>
     </button>
-
   `;
   return createTaskItem;
-
 }
 
 /**
@@ -149,10 +134,8 @@ const taskItemNode = function (taskText) {
  * totalParameter: 1;
  * parameterValue: <string> any
  */
-
 const taskInputValidation = function (taskIsValid) {
   if (taskIsValid) {
-
     /**
      * if there is an existing task
      * then the new task will be added before it
@@ -173,6 +156,8 @@ const taskInputValidation = function (taskIsValid) {
     taskItem = document.querySelectorAll("[data-task-item]");
     taskRemover = document.querySelectorAll("[data-task-remove]");
 
+    // save tasks to localStorage
+    saveTasks();
   } else {
     // if user pass any falsy value like(0, "", undefined, null, NaN)
     console.log("Поле має бути заповнене!");
@@ -183,7 +168,6 @@ const taskInputValidation = function (taskIsValid) {
  * if there is an existing task,
  * the welcome note will be hidden
  */
-
 const removeWelcomeNote = function () {
   if (taskList.childElementCount > 0) {
     welcomeNote.classList.add("hide");
@@ -195,60 +179,87 @@ const removeWelcomeNote = function () {
 /**
  * removeTask when click on delete button or check button
  */
-
 const removeTask = function () {
-
   // select clicked taskItem
   const parentElement = this.parentElement;
   trashSound.play(); //play delete sfx
 
   /**
-   * if the task is completed, the taskItem would be remove after 250ms
-   * if deleted than taskItem remove instant
+   * if the task is completed, the taskItem would be removed after 250ms
+   * if deleted then taskItem remove instant
    */
   if (this.dataset.taskRemove === "complete") {
-
     parentElement.classList.add("complete"); // add "complete" class on taskItem
     taskCompleteSound.play(); // play taskCompleteSound
 
     setTimeout(function () {
       parentElement.remove(); // remove taskItem
       removeWelcomeNote(); // remove welcome note
+      // save tasks to localStorage
+      saveTasks();
     }, 250);
-
   } else {
     parentElement.remove(); // remove taskItem
     removeWelcomeNote(); // remove welcome note
+    // save tasks to localStorage
+    saveTasks();
   }
-
 }
+
 /**
  * addTask function
  */
-
 const addTask = function () {
-
   // check the task input validation
   taskInputValidation(taskInput.value);
 
   // addEvent to all taskItem checkbox and delete button
   addEventOnMultiElem(taskRemover, removeTask);
+}
 
+/**
+ * save tasks to localStorage
+ */
+const saveTasks = function () {
+  const tasks = [];
+  taskItem.forEach(item => {
+    tasks.push(item.querySelector(".item-text").textContent);
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+/**
+ * load tasks from localStorage
+ */
+const loadTasks = function () {
+  const tasks = JSON.parse(localStorage.getItem("tasks"));
+  if (tasks) {
+    tasks.forEach(task => {
+      taskList.appendChild(taskItemNode(task));
+    });
+
+    // update taskItem DOM selection
+    taskItem = document.querySelectorAll("[data-task-item]");
+    taskRemover = document.querySelectorAll("[data-task-remove]");
+
+    // addEvent to all taskItem checkbox and delete button
+    addEventOnMultiElem(taskRemover, removeTask);
+
+    // hide the welcome note
+    welcomeNote.classList.add("hide");
+  }
 }
 
 /**
  * add keypress listener on taskInput
  */
-
 taskInput.addEventListener("keypress", function (e) {
-
   // addTask if user press 'Enter'
   switch (e.key) {
     case "Enter":
       addTask();
       break;
   }
-
 });
 
 // toggle active class on menu when click on menuBtn or dropdownLink 
@@ -262,15 +273,16 @@ addEventOnMultiElem(modalTogglers, toggleModal);
 /**
  * add "loaded" class on body when website is fully loaded
  */
-
 window.addEventListener("load", function () {
   document.body.classList.add("loaded");
+
+  // load tasks from localStorage
+  loadTasks();
 });
 
 /**
  * change body background when click on any themeBtn
  */
-
 const themeChanger = function () {
   // store hue value from clicked themeBtn
   const hueValue = this.dataset.hue;
