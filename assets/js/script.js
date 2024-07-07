@@ -110,19 +110,22 @@ const addEventOnMultiElem = function (elems, event) {
 
 /**
  * create taskItem elementNode and return it
- * totalParameter: 1;
- * parameterValue: <string> any;
+ * totalParameter: 2;
+ * parameterValue: <string> taskText, <boolean> isCompleted;
  */
-const taskItemNode = function (taskText) {
+const taskItemNode = function (taskText, isCompleted = false) {
   const createTaskItem = document.createElement("li");
   createTaskItem.classList.add("task-item");
   createTaskItem.setAttribute("data-task-item", "");
+  if (isCompleted) {
+    createTaskItem.classList.add("complete");
+  }
   createTaskItem.innerHTML = `
     <button class="item-icon" data-task-remove="complete">
       <span class="check-icon"></span>
     </button>
     <p class="item-text">${taskText}</p>
-    <button class="item-action-btn" aria-label="Видалити завдання" data-task-remove>
+    <button class="item-action-btn" aria-label="Видалити завдання" data-task-remove="delete">
       <ion-icon name="trash-outline" aria-hidden="true"></ion-icon>
     </button>
   `;
@@ -182,27 +185,41 @@ const removeWelcomeNote = function () {
 const removeTask = function () {
   // select clicked taskItem
   const parentElement = this.parentElement;
-  trashSound.play(); //play delete sfx
 
-  /**
-   * if the task is completed, the taskItem would be removed after 250ms
-   * if deleted then taskItem remove instant
-   */
   if (this.dataset.taskRemove === "complete") {
     parentElement.classList.add("complete"); // add "complete" class on taskItem
+    taskCompleteSound.currentTime = 0; // reset audio to start
     taskCompleteSound.play(); // play taskCompleteSound
 
-    setTimeout(function () {
-      parentElement.remove(); // remove taskItem
-      removeWelcomeNote(); // remove welcome note
-      // save tasks to localStorage
-      saveTasks();
-    }, 250);
-  } else {
-    parentElement.remove(); // remove taskItem
-    removeWelcomeNote(); // remove welcome note
-    // save tasks to localStorage
-    saveTasks();
+    // update task item state
+    const taskText = parentElement.querySelector(".item-text").textContent;
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const updatedTasks = tasks.map(task => {
+      if (task.text === taskText) {
+        return { ...task, completed: true };
+      }
+      return task;
+    });
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+    // hide the welcome note if no more tasks
+    if (taskList.childElementCount === 0) {
+      welcomeNote.classList.remove("hide");
+    }
+  } else if (this.dataset.taskRemove === "delete") {
+    parentElement.remove(); // remove taskItem from DOM
+    trashSound.play(); // play delete sfx
+
+    // update localStorage
+    const taskText = parentElement.querySelector(".item-text").textContent;
+    const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const updatedTasks = tasks.filter(task => task.text !== taskText);
+    localStorage.setItem("tasks", JSON.stringify(updatedTasks));
+
+    // show welcome note if no tasks remain
+    if (taskList.childElementCount === 0) {
+      welcomeNote.classList.remove("hide");
+    }
   }
 }
 
@@ -214,6 +231,7 @@ const addTask = function () {
   taskInputValidation(taskInput.value);
 
   // addEvent to all taskItem checkbox and delete button
+  taskRemover = document.querySelectorAll("[data-task-remove]");
   addEventOnMultiElem(taskRemover, removeTask);
 }
 
@@ -223,7 +241,10 @@ const addTask = function () {
 const saveTasks = function () {
   const tasks = [];
   taskItem.forEach(item => {
-    tasks.push(item.querySelector(".item-text").textContent);
+    tasks.push({
+      text: item.querySelector(".item-text").textContent,
+      completed: item.classList.contains("complete")
+    });
   });
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
@@ -235,18 +256,20 @@ const loadTasks = function () {
   const tasks = JSON.parse(localStorage.getItem("tasks"));
   if (tasks) {
     tasks.forEach(task => {
-      taskList.appendChild(taskItemNode(task));
+      taskList.appendChild(taskItemNode(task.text, task.completed));
     });
 
     // update taskItem DOM selection
     taskItem = document.querySelectorAll("[data-task-item]");
-    taskRemover = document.querySelectorAll("[data-task-remove]");
 
     // addEvent to all taskItem checkbox and delete button
+    taskRemover = document.querySelectorAll("[data-task-remove]");
     addEventOnMultiElem(taskRemover, removeTask);
 
     // hide the welcome note
-    welcomeNote.classList.add("hide");
+    if (taskList.childElementCount > 0) {
+      welcomeNote.classList.add("hide");
+    }
   }
 }
 
@@ -275,9 +298,7 @@ addEventOnMultiElem(modalTogglers, toggleModal);
  */
 window.addEventListener("load", function () {
   document.body.classList.add("loaded");
-
-  // load tasks from localStorage
-  loadTasks();
+  loadTasks(); // load tasks from localStorage
 });
 
 /**
