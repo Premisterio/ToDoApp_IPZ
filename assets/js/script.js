@@ -21,7 +21,7 @@ const date = new Date();
 
 // import task complete sound
 const taskCompleteSound = new Audio("./assets/sounds/task-complete.mp3");
-
+const trashSound = new Audio("./assets/sounds/trash.mp3");
 
 
 /**
@@ -127,7 +127,6 @@ const taskItemNode = function (taskText) {
   const createTaskItem = document.createElement("li");
   createTaskItem.classList.add("task-item");
   createTaskItem.setAttribute("data-task-item", "");
-
   createTaskItem.innerHTML = `
   
     <button class="item-icon" data-task-remove="complete">
@@ -141,7 +140,6 @@ const taskItemNode = function (taskText) {
     </button>
 
   `;
-
   return createTaskItem;
 
 }
@@ -202,6 +200,7 @@ const removeTask = function () {
 
   // select clicked taskItem
   const parentElement = this.parentElement;
+  trashSound.play(); //play delete sfx
 
   /**
    * if the task is completed, the taskItem would be remove after 250ms
@@ -223,7 +222,6 @@ const removeTask = function () {
   }
 
 }
-
 /**
  * addTask function
  */
